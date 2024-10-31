@@ -3,12 +3,28 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/users");
 const Roles = require("../models/roles");
 
+const {validationResult} = require("express-validator"); //validtor
+
+const validation = (req,res) => {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    return res.status(400).json({errors: errors.array()});
+  }
+}
+
 exports.post_register = async (req, res) => {
   const { name, surname, email, password } = req.body;
 
   try {
-    const existingUsers = await Users.findOne({ where: { email } });
 
+    //validasyon kontrolü
+    const validationError = validation(req,res)
+    if(validationError){
+      return validationError
+    }
+  
+
+    const existingUsers = await Users.findOne({ where: { email } });
     if (existingUsers) {
       return res.status(400).json({ status: 400, message: "Bu e-posta adresi zaten kayıtlı" });
     }
@@ -17,6 +33,7 @@ exports.post_register = async (req, res) => {
     const allUsers = await Users.findAll();
     let roleId;
 
+    // Eğer kayıtlı kimse yoksa ilk kayıt açan admin rolünde diğer kayıt açanlar ise 3. Parti Firma Kullanıcısı rolünde
     if (allUsers.length === 0) {
       const adminRole = await Roles.findOne({ where: { name: "Admin" } });
       if (adminRole) {
@@ -55,6 +72,12 @@ exports.post_register = async (req, res) => {
 
 exports.post_login = async (req,res) => {
   const {email,password} = req.body;
+
+  //validasyon kontrolü
+  const validationError = validation(req,res)
+    if(validationError){
+      return validationError
+    }
 
   const user = await Users.findOne({where:{email}});
 
