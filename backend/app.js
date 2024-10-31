@@ -15,11 +15,13 @@ require("./src/data/modelRelationships");
 app.use(cors({origin: '*',credentials: true}));
 
 const apiAuthRoutes = require("./src/routes/auth");
+const apiAdminRoutes = require("./src/routes/admin");
 // const apiUserRoutes = require("./src/routes/user");
 
 
-app.use(require("./src/middlewares/auth"));
+// app.use(require("./src/middlewares/auth"));
 app.use(apiAuthRoutes);
+app.use(apiAdminRoutes);
 // app.use(apiUserRoutes);
 
 //Veritabanını modellere göre sıfırlar
