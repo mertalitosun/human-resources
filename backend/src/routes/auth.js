@@ -21,6 +21,18 @@ router.post("/api/v1/login",
     ],
     authController.post_login);
 
+router.post("/api/v1/forgot-password",
+    [
+        body("email").notEmpty().withMessage("E-posta alanı boş bırakılamaz"),
+    ],
+    authController.post_forgot_password);
+
+router.post("/api/v1/change-password",
+    [
+        body("currentPassword").notEmpty().withMessage("Mevcut şifre alanı boş bırakılamaz"),
+        body("newPassword").notEmpty().withMessage("Yeni şifre alanı boş bırakılamaz"),
+    ],authController.post_change_password);
+    
 router.get("/api/v1/logout", authController.get_logout);
 
 

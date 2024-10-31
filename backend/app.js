@@ -18,6 +18,7 @@ const apiAuthRoutes = require("./src/routes/auth");
 // const apiUserRoutes = require("./src/routes/user");
 
 
+app.use(require("./src/middlewares/auth"));
 app.use(apiAuthRoutes);
 // app.use(apiUserRoutes);
 

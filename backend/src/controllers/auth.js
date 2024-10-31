@@ -2,13 +2,91 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Users = require("../models/users");
 const Roles = require("../models/roles");
+const generate_password = require("generate-password");
+
+const {sendNewMail} = require("../helpers/nodemailer");
 
 const {validationResult} = require("express-validator"); //validtor
-
 const validation = (req,res) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()){
     return res.status(400).json({errors: errors.array()});
+  }
+}
+
+
+exports.post_change_password = async (req,res) => {
+  
+  const validationError = validation(req, res);
+  if (validationError) return validationError;
+
+  const { currentPassword, newPassword } = req.body;
+  if(!req.user){
+    return res.status(401).json({success:false, message:"Kullanıcı Bulunamadı"})
+  }
+  const userId = req.user.id; 
+
+  try {
+    const user = await Users.findByPk(userId);
+
+    if(!user){
+      return res.status(401).json({success:false,message:"Kullanıcı Bulunamadı"})
+    }
+
+    const match = await bcrypt.compare(currentPassword, user.password);
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Eski şifre hatalı",
+      });
+    }
+
+   
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await user.update({ password: hashedPassword });
+
+    res.status(200).json({
+      success: true,
+      message: "Şifre başarıyla değiştirildi",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+}
+
+exports.post_forgot_password = async (req,res) => {
+  const {email} = req.body;
+
+  const validationError = validation(req, res);
+  if (validationError) return validationError;
+
+  const user = await Users.findOne({where:{email}});
+
+  if(!user){
+    return res.status(401).json({
+      success:false,
+      message:"Girilen e-posta adresine kayıtlı kullanıcı bulunamadı"
+    })
+  }
+
+  try{
+    const new_password = generate_password.generate({length:10,numbers:true})
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+
+    await user.update({password:hashedPassword});
+
+    const subject = "Şifre Yenileme";
+    const text = `Yeni Şifreniz: ${new_password}`;
+    await sendNewMail(user.email, subject, text); 
+    res.status(200).json({
+      success:true,
+      message:"Yeni şifre kayıtlı e-posta adresine gönderildi"
+    })
+
+  }catch(err){
+    console.log(err);
+    res.status(500).json({ message: err.message });
   }
 }
 
@@ -75,9 +153,9 @@ exports.post_login = async (req,res) => {
 
   //validasyon kontrolü
   const validationError = validation(req,res)
-    if(validationError){
-      return validationError
-    }
+  if(validationError){
+    return validationError
+  }
 
   const user = await Users.findOne({where:{email}});
 
