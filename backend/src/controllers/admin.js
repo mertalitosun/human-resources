@@ -6,8 +6,20 @@ const generate_password = require("generate-password");
 const {sendNewMail} = require("../helpers/nodemailer");
 const validation = require("../middlewares/validation");
 
+exports.get_new_users = async (req,res) => {
+
+    try{
+        const roles = await Roles.findAll();
+
+        return res.status(200).json({success:true,roles})
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message});
+    }
+}
+
 exports.post_new_user = async (req,res) => {
-    const {name,surname,email,password} = req.body;
+    const {name,surname,email,password,roleId} = req.body;
 
     try {
 
@@ -24,14 +36,6 @@ exports.post_new_user = async (req,res) => {
         }
     
         const hashedPassword = await bcrypt.hash(password, 10);
-        let roleId;
-        
-        const userRole = await Roles.findOne({ where: { name: "3. Parti Firma Kullanıcısı" } }); 
-        if (userRole) {
-        roleId = userRole.id; 
-        } else {
-        return res.status(500).json({ message: "Kullanıcı rolü bulunamadı" });
-        }
         
         const user = await Users.create({
         name,
@@ -81,7 +85,7 @@ exports.delete_user = async (req,res) => {
         if(user.role.name === "Admin"){
             return res.status(403).json({success:false,message:"Admin rolüne sahip kullanıcılar silinemez"});
         }
-        
+
         await user.destroy();
         res.status(200).json({success:true,message:"Kullanıcı başarıyla silindi"});
     }catch(err){

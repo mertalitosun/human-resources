@@ -6,6 +6,8 @@ const adminController = require("../controllers/admin");
 const {body} = require("express-validator"); //validator
 
 const {isAuth, isRole} = require("../middlewares/auth");
+
+router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_new_users)
 router.post("/api/v1/users",
     [
         body("name").notEmpty().withMessage("Ad alanı boş bırakılamaz"),
