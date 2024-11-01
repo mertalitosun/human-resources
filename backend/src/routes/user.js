@@ -8,7 +8,7 @@ const {isAuth, isRole} = require("../middlewares/auth");
 
 const upload = require("../helpers/multer");
 
-
+router.post("/api/v1/documents",isAuth,isRole(["3. Parti Firma Kullanıcısı"]),upload.array("document"),userController.post_documents);
 router.get("/api/v1/workers/:workerId/documents",isAuth,userController.get_documents);
 router.put("/api/v1/workers/:workerId",isAuth,isRole("3. Parti Firma Kullanıcısı"),userController.put_workers);
 router.delete("/api/v1/workers/:workerId",isAuth,isRole("3. Parti Firma Kullanıcısı"),userController.delete_workers);

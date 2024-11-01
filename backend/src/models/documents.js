@@ -7,12 +7,21 @@ const Documents = sequelize.define("documents",{
         primaryKey:true,
         autoIncrement:true
     },
-    document_type:{
+    name:{
         type:DataTypes.STRING,
         allowNull:false
     },
+    type:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+    path: { 
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     status:{
         type:DataTypes.ENUM('pending', 'approved', 'rejected'),
+        defaultValue:"pending",
         allowNull:false
     },
     rejection_reason:{

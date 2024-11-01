@@ -6,12 +6,33 @@ const validation = require("../middlewares/validation");
 
 
 
-// exports.post_documents = async (req,res) => {
-//     const authId = req.user.id;
-//     const {worker,uploadedBy,documentType,reviewedBy} = req.body;
-    
-    
-// }
+exports.post_documents = async (req,res) => {
+    const authId = req.user.id; 
+    const documents = req.files
+    const {workerId} = req.body;
+    let documentRecords = []; 
+    try {
+
+        if (documents && documents.length > 0) {
+            documentRecords = documents.map((document) => ({
+                name: document.filename,
+                type: document.fieldname,
+                path: document.path,
+                uploadedById: authId,
+                workerId,
+            }));
+
+            const createdDocuments = await Documents.bulkCreate(documentRecords);
+
+            return res.status(201).json({success: true,message: "Belgeler başarıyla yüklendi.",data: createdDocuments});
+        } else {
+            return res.status(400).json({success: false,message: "Yüklenmiş belge bulunamadı."});
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Sunucu Hatası", serverMsg: err.message });
+    }
+}
 
 exports.get_documents = async (req, res) => {
     const {workerId} = req.params;

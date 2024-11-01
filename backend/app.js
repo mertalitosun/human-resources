@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path")
 const sequelize = require("./src/data/dbConnection");
 const cookieParser = require('cookie-parser');
 
@@ -13,7 +14,7 @@ require("./src/data/dbConnection");
 require("./src/data/modelRelationships");
 
 app.use(cors({origin: '*',credentials: true}));
-
+app.use("/uploads",express.static(path.join(__dirname,"uploads")));
 const apiAuthRoutes = require("./src/routes/auth");
 const apiAdminRoutes = require("./src/routes/admin");
 const apiUserRoutes = require("./src/routes/user");
