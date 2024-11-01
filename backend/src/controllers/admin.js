@@ -22,27 +22,41 @@ exports.get_roles = async (req,res) => {
 
 
 exports.put_users = async (req, res) => {
+    const authId = req.user.id; 
     const { userId } = req.params;
     const { name, surname, email, roleId } = req.body;
 
     try {
+
         const user = await Users.findByPk(userId, { include: Roles });
 
+        
         if (!user) {
             return res.status(404).json({ success: false, message: "Kullanıcı bulunamadı!" });
         }
 
+        if(req.user.role.name === "Admin"){
+            user.name = name || user.name; 
+            user.surname = surname || user.surname; 
+            user.email = email || user.email; 
+            user.roleId = roleId || user.roleId;
+    
+    
+            await user.save(); 
+    
+            res.status(200).json({ success: true, message: "Kullanıcı başarıyla güncellendi.", data: user });
+        }else{
+            if(authId != userId){
+                return res.status(403).json({success:false,message:"Bu kullanıcıyı güncelleme yetkiniz yok!"});
+            }
+            user.name = name || user.name; 
+            user.surname = surname || user.surname; 
+            user.email = email || user.email; 
 
-        user.name = name || user.name; 
-        user.surname = surname || user.surname; 
-        user.email = email || user.email; 
-        user.roleId = roleId || user.roleId;
-
+            await user.save(); 
+            return res.status(200).json({ success: true, message: "Kullanıcı bilgileri başarıyla güncellendi.", data: user });
+        }
        
-
-        await user.save(); 
-
-        res.status(200).json({ success: true, message: "Kullanıcı başarıyla güncellendi.", data: user });
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, message: "Sunucu Hatası", serverMsg: err.message });

@@ -13,7 +13,7 @@ router.get("/api/v1/roles",isAuth,isRole("Admin"),adminController.get_roles);
 
 router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_users);
 
-router.put("/api/v1/users/:userId",isAuth,isRole("Admin"),adminController.put_users);
+router.put("/api/v1/users/:userId",isAuth,isRole(["Admin","3. Parti Firma Kullanıcısı"]),adminController.put_users);
 
 router.post("/api/v1/users",
     [
