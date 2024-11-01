@@ -16,17 +16,17 @@ app.use(cors({origin: '*',credentials: true}));
 
 const apiAuthRoutes = require("./src/routes/auth");
 const apiAdminRoutes = require("./src/routes/admin");
-// const apiUserRoutes = require("./src/routes/user");
+const apiUserRoutes = require("./src/routes/user");
 
 
 app.use(apiAuthRoutes);
 app.use(apiAdminRoutes);
-// app.use(apiUserRoutes);
+app.use(apiUserRoutes);
 
 //Veritabanını modellere göre sıfırlar
 
 // (async () => {
-//   await sequelize.sync({ force: true });
+//   await sequelize.sync({ alter: true });
 //   await require("./src/data/dummyData")();
 // })();
 

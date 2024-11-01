@@ -16,7 +16,7 @@ const Workers = sequelize.define("workers",{
         allowNull:false
     },
     identity_no:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.STRING,
         allowNull:false
     },
     
