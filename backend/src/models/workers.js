@@ -15,6 +15,10 @@ const Workers = sequelize.define("workers",{
         type:DataTypes.STRING,
         allowNull:false
     },
+    email:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
     identity_no:{
         type:DataTypes.STRING,
         allowNull:false

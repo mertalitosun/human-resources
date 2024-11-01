@@ -12,6 +12,9 @@ Roles.hasMany(Users, { foreignKey: 'roleId' });
 Documents.belongsTo(Workers, { foreignKey: 'workerId' });
 Workers.hasMany(Documents, { foreignKey: 'workerId' });
 
+Workers.belongsTo(Users, { as: 'AddedBy', foreignKey: 'addedById' });
+Users.hasMany(Workers, { as: 'AddedWorkers', foreignKey: 'addedById' });
+
 
 Documents.belongsTo(Users, { as: 'UploadedBy', foreignKey: 'uploadedById' });
 Users.hasMany(Documents, { as: 'UploadedDocuments', foreignKey: 'uploadedById' });
