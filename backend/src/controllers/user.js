@@ -12,12 +12,15 @@ exports.put_workers = async (req, res) => {
     const { name, surname,email, identity_no } = req.body;
 
     try {
-        const worker = await Workers.findOne({where:{id:workerId, addedById:userId},include:{model:Users,as:"AddedBy"}});
+        const worker = await Workers.findOne({where:{id:workerId},include:{model:Users,as:"AddedBy"}});
 
         if (!worker) {
             return res.status(404).json({ success: false, message: "İşçi bulunamadı!" });
         }
 
+        if(worker.addedById != userId){
+            return res.status(404).json({ success: false, message: "Bu işçiyi güncellemeye yetkiniz yok!" });
+        }
 
         worker.name = name || worker.name; 
         worker.surname = surname || worker.surname; 
@@ -39,12 +42,14 @@ exports.delete_workers = async (req,res) => {
     const userId = req.user.id
     const {workerId} = req.params;
     try{
-        const worker = await Workers.findOne({where:{id:workerId, addedById:userId}});
+        const worker = await Workers.findOne({where:{id:workerId}});
 
         if(!worker){
             return res.status(404).json({success:false,message:"İşçi bulunamadı!"})
         }
-        
+        if(worker.addedById != userId){
+            return res.status(404).json({ success: false, message: "Bu işçiyi silmeye yetkiniz yok!" });
+        }
         await worker.destroy();
         res.status(200).json({success:true,message:"İşçi başarıyla silindi"});
     }catch(err){
