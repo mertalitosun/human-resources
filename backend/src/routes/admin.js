@@ -10,6 +10,7 @@ const {isAuth, isRole} = require("../middlewares/auth");
 router.get("/api/v1/roles",isAuth,isRole("Admin"),adminController.get_roles);
 
 router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_users);
+
 router.post("/api/v1/users",
     [
         body("name").notEmpty().withMessage("Ad alanı boş bırakılamaz"),

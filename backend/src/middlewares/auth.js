@@ -16,9 +16,9 @@ const isAuth = (req, res, next) => {
   });
 };
 
-const isRole = (role) => {
+const isRole = (roles) => {
   return (req,res,next) => {
-    if(req.user.role !== role){
+    if(!roles.includes(req.user.role)){
       return res.status(403).json({success:false,message:"Bu işlem için yetkili değilsiniz"})
     }
     next();
