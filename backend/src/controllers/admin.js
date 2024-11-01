@@ -2,15 +2,9 @@ const bcrypt = require("bcrypt");
 const Users = require("../models/users");
 const Roles = require("../models/roles");
 const generate_password = require("generate-password");
-const {sendNewMail} = require("../helpers/nodemailer");
 
-const {validationResult} = require("express-validator"); //validtor
-const validation = (req,res) => {
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return res.status(400).json({errors: errors.array()});
-    }
-}
+const {sendNewMail} = require("../helpers/nodemailer");
+const validation = require("../middlewares/validation");
 
 exports.post_new_user = async (req,res) => {
     const {name,surname,email,password} = req.body;
@@ -71,5 +65,27 @@ exports.post_new_user = async (req,res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err.message });
+    }
+}
+
+exports.delete_user = async (req,res) => {
+    const {userId} = req.params;
+
+    try{
+        const user = await Users.findByPk(userId,{include:{model:Roles}});
+
+        if(!user){
+            return res.status(404).json({success:false,message:"Kullanıcı bulunamadı!"});
+        }
+
+        if(user.role.name === "Admin"){
+            return res.status(403).json({success:false,message:"Admin rolüne sahip kullanıcılar silinemez"});
+        }
+        
+        await user.destroy();
+        res.status(200).json({success:true,message:"Kullanıcı başarıyla silindi"});
+    }catch(err){
+        console.log(err);
+        res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message});
     }
 }

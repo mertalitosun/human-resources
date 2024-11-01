@@ -6,14 +6,7 @@ const generate_password = require("generate-password");
 
 const {sendNewMail} = require("../helpers/nodemailer");
 
-const {validationResult} = require("express-validator"); //validtor
-const validation = (req,res) => {
-  const errors = validationResult(req);
-  if(!errors.isEmpty()){
-    return res.status(400).json({errors: errors.array()});
-  }
-}
-
+const validation = require("../middlewares/validation");
 
 exports.post_change_password = async (req,res) => {
   
