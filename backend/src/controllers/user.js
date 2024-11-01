@@ -1,7 +1,7 @@
 const Documents = require("../models/documents");
 const Users = require("../models/users");
 const Workers = require("../models/workers");
-
+const Sequelize = require("sequelize")
 const validation = require("../middlewares/validation");
 
 
@@ -125,7 +125,14 @@ exports.post_workers = async (req,res) => {
         }
     
     
-        const existingWorkers = await Workers.findOne({ where: { identity_no,email } });
+        const existingWorkers = await Workers.findOne({
+            where: {
+                [Sequelize.Op.or]: [
+                    { identity_no: identity_no }, 
+                    { email: email }              
+                ]
+            }
+        });
         if (existingWorkers) {
         return res.status(400).json({ status: 400, message: "Bu işçi zaten kayıtlı" });
         }
