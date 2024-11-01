@@ -6,7 +6,9 @@ const generate_password = require("generate-password");
 const {sendNewMail} = require("../helpers/nodemailer");
 const validation = require("../middlewares/validation");
 
-exports.get_new_users = async (req,res) => {
+
+
+exports.get_roles = async (req,res) => {
 
     try{
         const roles = await Roles.findAll();
@@ -18,7 +20,19 @@ exports.get_new_users = async (req,res) => {
     }
 }
 
-exports.post_new_user = async (req,res) => {
+exports.get_users = async (req,res) => {
+
+    try{
+        const users = await Users.findAll({include:Roles});
+
+        return res.status(200).json({success:true,users,message:"Kullanıcılar Listesi"})
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message})
+    }
+}
+
+exports.post_users = async (req,res) => {
     const {name,surname,email,password,roleId} = req.body;
 
     try {
