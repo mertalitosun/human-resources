@@ -6,6 +6,39 @@ const validation = require("../middlewares/validation");
 
 
 
+// exports.post_documents = async (req,res) => {
+//     const authId = req.user.id;
+//     const {worker,uploadedBy,documentType,reviewedBy} = req.body;
+    
+    
+// }
+
+exports.get_documents = async (req, res) => {
+    const {workerId} = req.params;
+    try {
+        const documents = await Documents.findAll({
+            where: { workerId }, 
+            include: [
+                {
+                    model: Workers,
+                },
+                {
+                    model: Users,
+                    as: "UploadedBy",
+                },
+                {
+                    model: Users,
+                    as: "ApprovedBy",
+                }
+            ]
+        });
+        return res.status(200).json({ success: true, documents, message: "İşçi belgeleri başarıyla getirildi." });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Sunucu Hatası", serverMsg: err.message });
+    }
+}
+
 exports.put_workers = async (req, res) => {
     const userId = req.user.id;
     const { workerId } = req.params;
@@ -101,9 +134,16 @@ exports.post_workers = async (req,res) => {
 exports.get_workers = async (req,res) => {
     const userId = req.user.id
     try{
-        const workers = await Workers.findAll({where:{addedById:userId}});
 
-        return res.status(200).json({success:true,workers,message:"İşçiler Listesi"})
+        if(req.user.role === "Admin" || req.user.role === "İnsan Kaynakları"){
+
+            const workers = await Workers.findAll();
+            return res.status(200).json({success:true,workers,message:"İşçiler Listesi"})
+        }else{
+            const workers = await Workers.findAll({where:{addedById:userId}});
+            return res.status(200).json({success:true,workers,message:"İşçiler Listesi"})
+        }
+       
     }catch(err){
         console.log(err);
         return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message})

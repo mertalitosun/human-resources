@@ -35,7 +35,7 @@ exports.put_users = async (req, res) => {
             return res.status(404).json({ success: false, message: "Kullanıcı bulunamadı!" });
         }
 
-        if(req.user.role.name === "Admin"){
+        if(req.user.role === "Admin"){
             user.name = name || user.name; 
             user.surname = surname || user.surname; 
             user.email = email || user.email; 
