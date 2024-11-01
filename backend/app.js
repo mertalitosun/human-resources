@@ -19,7 +19,6 @@ const apiAdminRoutes = require("./src/routes/admin");
 // const apiUserRoutes = require("./src/routes/user");
 
 
-// app.use(require("./src/middlewares/auth"));
 app.use(apiAuthRoutes);
 app.use(apiAdminRoutes);
 // app.use(apiUserRoutes);

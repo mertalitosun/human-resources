@@ -157,7 +157,9 @@ exports.post_login = async (req,res) => {
     return validationError
   }
 
-  const user = await Users.findOne({where:{email}});
+  const user = await Users.findOne({where:{email},include:{
+    model:Roles
+  }});
 
   if(!user){
     return res.status(401).json({
@@ -175,7 +177,7 @@ exports.post_login = async (req,res) => {
     })
   }
 
-  const token = jwt.sign({id:user.id},"humanResourcesJwtToken",{expiresIn:"1h"});
+  const token = jwt.sign({id:user.id,role:user.role.name},"humanResourcesJwtToken",{expiresIn:"1h"});
   res.cookie('token', token, { httpOnly: true, maxAge: 3600000 })
   res.status(200).json({
     success:true,
