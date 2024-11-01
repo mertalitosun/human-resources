@@ -9,7 +9,11 @@ const {isAuth, isRole} = require("../middlewares/auth");
 
 router.get("/api/v1/roles",isAuth,isRole("Admin"),adminController.get_roles);
 
+
+
 router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_users);
+
+router.put("/api/v1/users/:userId",isAuth,isRole("Admin"),adminController.put_users);
 
 router.post("/api/v1/users",
     [
@@ -20,5 +24,5 @@ router.post("/api/v1/users",
     ],
 isAuth,isRole("Admin"),adminController.post_users);
 
-router.delete("/api/v1/users/:userId",isAuth,isRole("Admin"),adminController.delete_user);
+router.delete("/api/v1/users/:userId",isAuth,isRole("Admin"),adminController.delete_users);
 module.exports = router;

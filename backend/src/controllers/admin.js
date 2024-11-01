@@ -20,6 +20,35 @@ exports.get_roles = async (req,res) => {
     }
 }
 
+
+exports.put_users = async (req, res) => {
+    const { userId } = req.params;
+    const { name, surname, email, roleId } = req.body;
+
+    try {
+        const user = await Users.findByPk(userId, { include: Roles });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "Kullanıcı bulunamadı!" });
+        }
+
+
+        user.name = name || user.name; 
+        user.surname = surname || user.surname; 
+        user.email = email || user.email; 
+        user.roleId = roleId || user.roleId;
+
+       
+
+        await user.save(); 
+
+        res.status(200).json({ success: true, message: "Kullanıcı başarıyla güncellendi.", data: user });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: "Sunucu Hatası", serverMsg: err.message });
+    }
+}
+
 exports.get_users = async (req,res) => {
 
     try{
@@ -86,7 +115,7 @@ exports.post_users = async (req,res) => {
     }
 }
 
-exports.delete_user = async (req,res) => {
+exports.delete_users = async (req,res) => {
     const {userId} = req.params;
 
     try{
