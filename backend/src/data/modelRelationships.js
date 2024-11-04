@@ -9,8 +9,8 @@ const Notifications = require("../models/notifications");
 Users.belongsTo(Roles, { foreignKey: 'roleId' });
 Roles.hasMany(Users, { foreignKey: 'roleId' });
 
-Documents.belongsTo(Workers, { foreignKey: 'workerId' });
-Workers.hasMany(Documents, { foreignKey: 'workerId' });
+Documents.belongsTo(Workers, { foreignKey: 'workerId', onDelete:"CASCADE" });
+Workers.hasMany(Documents, { foreignKey: 'workerId', onDelete:"CASCADE" });
 
 Workers.belongsTo(Users, { as: 'AddedBy', foreignKey: 'addedById' });
 Users.hasMany(Workers, { as: 'AddedWorkers', foreignKey: 'addedById' });

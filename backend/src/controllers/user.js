@@ -6,6 +6,26 @@ const validation = require("../middlewares/validation");
 
 
 
+exports.delete_documents = async (req,res) => {
+    const userId = req.user.id;
+    const {documentId} = req.params;
+    try{
+        const document = await Documents.findOne({where:{id:documentId}});
+
+        if(!document){
+            return res.status(404).json({success:false,message:"Dosya bulunamadı!"})
+        }
+        if(document.uploadedById != userId){
+            return res.status(404).json({ success: false, message: "Bu belgeyi silmeye yetkiniz yok!" });
+        }
+        await document.destroy();
+        res.status(200).json({success:true,message:"Dosya başarıyla silindi"});
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message})
+    }
+}
+
 exports.post_documents = async (req,res) => {
     const authId = req.user.id; 
     const documents = req.files
@@ -13,6 +33,13 @@ exports.post_documents = async (req,res) => {
     let documentRecords = []; 
     try {
 
+        const worker = await Workers.findOne({where:{id:workerId}});
+        if(!worker){
+            return res.status(401).json({success:false,message:"İşçi bulunamadı!"});
+        }
+        if(authId != worker.addedById){
+            return res.status(401).json({success:false,message:"Bu işçiye belge ekleme yetkiniz yok!"});
+        }
         if (documents && documents.length > 0) {
             documentRecords = documents.map((document) => ({
                 name: document.filename,
