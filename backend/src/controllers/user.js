@@ -132,8 +132,8 @@ exports.put_workers = async (req, res) => {
             return res.status(404).json({ success: false, message: "İşçi bulunamadı!" });
         }
 
-        if(worker.addedById != userId){
-            return res.status(404).json({ success: false, message: "Bu işçiyi güncellemeye yetkiniz yok!" });
+        if (req.user.role !== "Admin" && worker.addedById !== userId) {
+            return res.status(403).json({ success: false, message: "Bu işçiyi güncellemeye yetkiniz yok!" });
         }
 
         worker.name = name || worker.name; 

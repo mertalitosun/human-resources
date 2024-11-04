@@ -20,7 +20,6 @@ exports.get_roles = async (req,res) => {
     }
 }
 
-
 exports.put_users = async (req, res) => {
     const authId = req.user.id; 
     const { userId } = req.params;
