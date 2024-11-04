@@ -175,6 +175,8 @@ exports.post_login = async (req,res) => {
   res.status(200).json({
     success:true,
     message:"Giriş Başarılı",
+    token,
+    user
   })
 };
 
