@@ -165,7 +165,7 @@ exports.get_workers = async (req,res) => {
 
         if(req.user.role === "Admin" || req.user.role === "İnsan Kaynakları"){
 
-            const workers = await Workers.findAll();
+            const workers = await Workers.findAll({include:{model:Documents}});
             return res.status(200).json({success:true,workers,message:"İşçiler Listesi"})
         }else{
             const workers = await Workers.findAll({where:{addedById:userId}});
