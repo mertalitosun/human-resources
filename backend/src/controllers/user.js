@@ -4,7 +4,7 @@ const Workers = require("../models/workers");
 const Sequelize = require("sequelize")
 const validation = require("../middlewares/validation");
 
-
+const {deleteFile} = require("../helpers/multer");
 
 exports.delete_documents = async (req,res) => {
     const userId = req.user.id;
@@ -12,6 +12,7 @@ exports.delete_documents = async (req,res) => {
     try{
         const document = await Documents.findOne({where:{id:documentId}});
 
+        deleteFile(document.path);
         if(!document){
             return res.status(404).json({success:false,message:"Dosya bulunamadı!"})
         }

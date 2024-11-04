@@ -1,4 +1,7 @@
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null,"uploads/");
@@ -9,6 +12,16 @@ const storage = multer.diskStorage({
   }
 });
 
+const deleteFile = (filePath) => {
+  fs.unlink(filePath,(err)=>{
+    if(err){
+      console.log("Dosya silinirken sorun oluştu",err);
+    }else{
+      console.log("Dosya başarıyla silindi");
+    }
+  })
+}
+
 const upload = multer({storage:storage});
 
-module.exports = upload;
+module.exports = {upload,deleteFile};

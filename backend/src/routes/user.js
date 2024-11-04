@@ -4,7 +4,7 @@ const userController = require("../controllers/user");
 
 const {body} = require("express-validator"); //validator
 const {isAuth, isRole} = require("../middlewares/auth");
-const upload = require("../helpers/multer");
+const {upload} = require("../helpers/multer");
 
 router.delete("/api/v1/documents/:documentId",isAuth,isRole(["3. Parti Firma Kullanıcısı","Admin"]),userController.delete_documents);
 
