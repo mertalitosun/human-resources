@@ -6,6 +6,8 @@ const {body} = require("express-validator"); //validator
 const {isAuth, isRole} = require("../middlewares/auth");
 const {upload} = require("../helpers/multer");
 
+router.patch("/api/v1/documents",isAuth,isRole(["İnsan Kaynakları","Admin"]),userController.patch_document_status);
+
 router.delete("/api/v1/documents/:documentId",isAuth,isRole(["3. Parti Firma Kullanıcısı","Admin"]),userController.delete_documents);
 
 router.post("/api/v1/documents",isAuth,isRole(["3. Parti Firma Kullanıcısı","Admin"]),upload.array("document"),userController.post_documents);

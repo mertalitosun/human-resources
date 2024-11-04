@@ -6,6 +6,38 @@ const validation = require("../middlewares/validation");
 
 const {deleteFile} = require("../helpers/multer");
 
+exports.patch_document_status = async (req,res) => {
+    const user = req.user;
+    const {status,documentId,rejection_reason} = req.body;
+    try{
+        if(user.role != "İnsan Kaynakları" && user.role != "Admin"){
+            return res.status(401).json({success:false, message: "Bu İşlem İçin Yetkiniz Yok!"});
+        }
+
+        const document = await Documents.findOne({where:{id:documentId}});
+
+        if(!document){
+            return res.status(404).json({success:false,message:"Dosya bulunamadı!"})
+        }
+
+        if(status == "rejected"){
+            document.rejection_reason = rejection_reason || "Reddilme Nedeni Bildirilmedi";
+            document.status = status;
+            document.approvedById = req.user.id;
+        }else{
+            document.status = status;
+            document.rejection_reason = null;
+            document.approvedById = req.user.id;
+        }
+        
+        await document.save();
+        return res.status(200).json({ success: true, message: "Evrak durumu başarıyla güncellendi", document });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({success:false, message:"Sunucu Hatası", serverMsg:err.message});
+    }
+}
+
 exports.delete_documents = async (req,res) => {
     const userId = req.user.id;
     const {documentId} = req.params;
