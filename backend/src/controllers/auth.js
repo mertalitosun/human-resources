@@ -57,7 +57,7 @@ exports.post_forgot_password = async (req,res) => {
   const user = await Users.findOne({where:{email}});
 
   if(!user){
-    return res.status(401).json({
+    return res.status(404).json({
       success:false,
       message:"Girilen e-posta adresine kayıtlı kullanıcı bulunamadı"
     })
@@ -110,14 +110,14 @@ exports.post_register = async (req, res) => {
       if (adminRole) {
         roleId = adminRole.id; 
       } else {
-        return res.status(500).json({ message: "Admin rolü bulunamadı" });
+        return res.status(404).json({ message: "Admin rolü bulunamadı" });
       }
     } else {
       const userRole = await Roles.findOne({ where: { name: "3. Parti Firma Kullanıcısı" } }); 
       if (userRole) {
         roleId = userRole.id; 
       } else {
-        return res.status(500).json({ message: "Kullanıcı rolü bulunamadı" });
+        return res.status(404).json({ message: "Kullanıcı rolü bulunamadı" });
       }
     }
     
@@ -132,12 +132,12 @@ exports.post_register = async (req, res) => {
     res.status(201).json({
       success: true,
       data: user,
-      message: "Kayıt Başarılı",
+      message: "Kullanıcı başarıyla kaydedildi",
     });
 
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({success:false, message: "Sunucu Hatası", serverMsg:err.message });
   }
 };
 
@@ -155,7 +155,7 @@ exports.post_login = async (req,res) => {
   }});
 
   if(!user){
-    return res.status(401).json({
+    return res.status(404).json({
       success:false,
       message:"Girilen e-posta adresine kayıtlı kullanıcı bulunamadı"
     })

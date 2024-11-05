@@ -11,7 +11,7 @@ exports.patch_document_status = async (req,res) => {
     const {status,documentId,rejection_reason} = req.body;
     try{
         if(user.role != "İnsan Kaynakları" && user.role != "Admin"){
-            return res.status(401).json({success:false, message: "Bu İşlem İçin Yetkiniz Yok!"});
+            return res.status(403).json({success:false, message: "Bu İşlem İçin Yetkiniz Yok!"});
         }
 
         const document = await Documents.findOne({where:{id:documentId}});
@@ -49,7 +49,7 @@ exports.delete_documents = async (req,res) => {
             return res.status(404).json({success:false,message:"Dosya bulunamadı!"})
         }
         if(document.uploadedById != userId){
-            return res.status(404).json({ success: false, message: "Bu belgeyi silmeye yetkiniz yok!" });
+            return res.status(403).json({ success: false, message: "Bu belgeyi silmeye yetkiniz yok!" });
         }
         await document.destroy();
         res.status(200).json({success:true,message:"Dosya başarıyla silindi"});
@@ -68,10 +68,10 @@ exports.post_documents = async (req,res) => {
 
         const worker = await Workers.findOne({where:{id:workerId}});
         if(!worker){
-            return res.status(401).json({success:false,message:"İşçi bulunamadı!"});
+            return res.status(404).json({success:false,message:"İşçi bulunamadı!"});
         }
         if(authId != worker.addedById){
-            return res.status(401).json({success:false,message:"Bu işçiye belge ekleme yetkiniz yok!"});
+            return res.status(403).json({success:false,message:"Bu işçiye belge ekleme yetkiniz yok!"});
         }
         if (documents && documents.length > 0) {
             documentRecords = documents.map((document) => ({
@@ -86,7 +86,7 @@ exports.post_documents = async (req,res) => {
 
             return res.status(201).json({success: true,message: "Belgeler başarıyla yüklendi.",data: createdDocuments});
         } else {
-            return res.status(400).json({success: false,message: "Yüklenmiş belge bulunamadı."});
+            return res.status(404).json({success: false,message: "Yüklenmiş belge bulunamadı."});
         }
     } catch (err) {
         console.log(err);
@@ -97,6 +97,11 @@ exports.post_documents = async (req,res) => {
 exports.get_documents = async (req, res) => {
     const {workerId} = req.params;
     try {
+        const worker = await Workers.findByPk(workerId);
+
+        if(!worker){
+            return res.status(404).json({success:false, message:"Belirtilen işçi bulunamadı."})
+        }
         const documents = await Documents.findAll({
             where: { workerId }, 
             include: [
@@ -162,7 +167,7 @@ exports.delete_workers = async (req,res) => {
             return res.status(404).json({success:false,message:"İşçi bulunamadı!"})
         }
         if(worker.addedById != userId){
-            return res.status(404).json({ success: false, message: "Bu işçiyi silmeye yetkiniz yok!" });
+            return res.status(403).json({ success: false, message: "Bu işçiyi silmeye yetkiniz yok!" });
         }
         await worker.destroy();
         res.status(200).json({success:true,message:"İşçi başarıyla silindi"});
