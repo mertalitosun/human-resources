@@ -13,8 +13,7 @@ const {upload} = require("../helpers/multer");
  * tags:
  *   name: User
  *   description: 3. Parti kullanıcılar ve insan kaynakları işlemleri
- */
-
+*/
 
 /**
  * @swagger
