@@ -229,11 +229,10 @@ exports.get_workers = async (req,res) => {
     try{
 
         if(req.user.role === "Admin" || req.user.role === "İnsan Kaynakları"){
-
-            const workers = await Workers.findAll({include:{model:Documents}});
+            const workers = await Workers.findAll({include:[{model:Documents},{model:Users, as:"AddedBy"}]});
             return res.status(200).json({success:true,workers,message:"İşçiler Listesi"})
         }else{
-            const workers = await Workers.findAll({where:{addedById:userId}});
+            const workers = await Workers.findAll({where:{addedById:userId},include:{model:Users, as:"AddedBy"}});
             return res.status(200).json({success:true,workers,message:"İşçiler Listesi"})
         }
        

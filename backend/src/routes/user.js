@@ -259,6 +259,6 @@ router.post("/api/v1/workers",
  *       500:
  *         description: Sunucu hatası.
  */
-router.get("/api/v1/workers",isAuth,isRole(["Admin","3. Parti Firma Kullanıcısı"]),userController.get_workers);
+router.get("/api/v1/workers",isAuth,isRole(["Admin","3. Parti Firma Kullanıcısı","İnsan Kaynakları"]),userController.get_workers);
 
 module.exports = router;
