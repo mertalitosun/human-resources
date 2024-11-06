@@ -9,7 +9,7 @@ const isAuth = (req, res, next) => {
 
   jwt.verify(token, "humanResourcesJwtToken", (err, user) => {
     if (err) {
-      return res.status(403).json({success:false,message:err.message});
+      return res.status(403).json({success:false,message:"Geçersiz Token",serverMsg:err.message});
     }
     req.user = user; 
     next(); 
