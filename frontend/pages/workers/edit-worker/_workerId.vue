@@ -1,28 +1,26 @@
 <template>
     <div class="container my-3">
       <h2>İşçiyi Düzenle</h2>
-      <form @submit.prevent="updateUser">
+      <form @submit.prevent="updateWorker">
         <div class="form-group">
           <label for="name">Ad</label>
-          <input v-model="user.name" type="text" class="form-control" id="name" required />
+          <input v-model="worker.name" type="text" class="form-control" id="name" required />
         </div>
         <div class="form-group">
           <label for="surname">Soyad</label>
-          <input v-model="user.surname" type="text" class="form-control" id="surname" required />
+          <input v-model="worker.surname" type="text" class="form-control" id="surname" required />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="user.email" type="email" class="form-control" id="email" required />
+          <input v-model="worker.email" type="email" class="form-control" id="email" required />
         </div>
         <div class="form-group">
-          <label for="role">Rol</label>
-          <select v-model="user.roleId" class="form-control" id="role" required>
-            <option v-for="role in roles" :key="role.id" :value="role.id">
-              {{ role.name }}
-            </option>
-          </select>
+          <label for="identity_no">TC Kimlik No</label>
+          <input v-model="worker.identity_no" type="text" class="form-control" id="identity_no" required />
         </div>
-        <button type="submit" class="btn btn-primary">Düzenle</button>
+        <div class="my-3">
+          <button type="submit" class="btn btn-primary">Düzenle</button>
+        </div>
       </form>
     </div>
   </template>
@@ -31,62 +29,60 @@
   export default {
     data() {
       return {
-        user: {
+        worker: {
           name: '',
           surname: '',
           email: '',
-          roleId: null
+          identity_no: ""
         },
-        roles: [] 
       };
     },
     async mounted() {
-      const userId = this.$route.params.userId; 
-      await this.fetchUser(userId);
-      await this.fetchRoles(); 
+      const workerId = this.$route.params.workerId; 
+      await this.fetchWorker(workerId);
     },
     methods: {
-      async fetchUser(userId) {
+      async fetchWorker(workerId) {
         try {
           const token = localStorage.getItem('token');
-          const response = await this.$axios.get(`/api/v1/users/${userId}`, {
+          const response = await this.$axios.get(`/api/v1/workers/${workerId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          this.user = response.data.user;
+          this.worker = response.data.worker;
         } catch (error) {
-          console.error('Kullanıcı verisi alınırken hata oluştu:', error);
+          console.error('İşçi verisi alınırken hata oluştu:', error);
         }
       },
-      async fetchRoles() {
+      async updateWorker() {
         try {
           const token = localStorage.getItem('token');
-          const response = await this.$axios.get('/api/v1/roles', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          this.roles = response.data.roles; 
-        } catch (error) {
-          console.error('Roller alınırken hata oluştu:', error);
-        }
-      },
-      async updateUser() {
-        try {
-          const token = localStorage.getItem('token');
-          const response = await this.$axios.put(`/api/v1/users/${this.user.id}`, this.user, {
+          const response = await this.$axios.put(`/api/v1/workers/${this.worker.id}`, this.worker, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           if (response.status === 200) {
-            this.$router.push('/user/users'); 
-            alert('Kullanıcı başarıyla güncellendi.');
+            this.$router.push('/workers/workers'); 
+            alert('İşçi başarıyla güncellendi.');
           }
         } catch (error) {
-          console.error('Kullanıcı güncellenirken hata oluştu:', error);
-          alert('Kullanıcı güncellenirken bir hata oluştu.');
+          if(error.response){
+            const status = error.response.status;
+            const data = error.response.data;
+            if(status === 403){
+              alert(data.message);
+            }else if(status === 404){
+              alert(data.message);
+            }else if(status === 500){
+              alert(data.message);
+            }else{
+              alert("Hata:",data.message);
+            }
+          }
+          console.error('İşçi güncellenirken hata oluştu:', error);
+          alert('İşçi güncellenirken bir hata oluştu.');
         }
       }
     }
