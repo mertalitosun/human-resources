@@ -104,7 +104,7 @@ exports.get_documents = async (req, res) => {
             return res.status(404).json({success:false, message:"Belirtilen işçi bulunamadı."})
         }
         
-        if (req.user.role !== "Admin" && userId !== worker.addedById) {
+        if (req.user.role !== "Admin" && req.user.role !== "İnsan Kaynakları" && userId !== worker.addedById) {
             return res.status(403).json({ success: false, message: "Bu işçi belgelerine erişme yetkiniz yok!" });
         }
 
