@@ -62,6 +62,17 @@ exports.put_users = async (req, res) => {
     }
 }
 
+exports.get_users_details = async (req,res) => {
+    const {userId} = req.params;
+    try{
+        const user = await Users.findOne({where:{id:userId},include:Roles});
+
+        return res.status(200).json({success:true,user,message:"Kullanıcı getirildi."})
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message})
+    }
+}
 exports.get_users = async (req,res) => {
 
     try{
@@ -75,10 +86,10 @@ exports.get_users = async (req,res) => {
 }
 
 exports.post_users = async (req,res) => {
-    const {name,surname,email,password,roleId} = req.body;
+    const {name,surname,email,roleId} = req.body;
 
     try {
-
+        const password = generate_password.generate({length:10,numbers:true})
         //validasyon kontrolü
         const validationError = validation(req,res)
         if(validationError){

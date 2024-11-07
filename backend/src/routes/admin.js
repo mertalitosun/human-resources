@@ -46,6 +46,20 @@ router.get("/api/v1/roles",isAuth,isRole("Admin"),adminController.get_roles);
  */
 router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_users);
 
+/**
+ * @swagger
+ * /api/v1/users/{userId}:
+ *   get:
+ *     tags:
+ *          - Admin
+ *     summary: Belirli kullanıcının bilgilerini getir
+ *     responses:
+ *       200:
+ *         description: Kullanıcı bilgileri başarıyla alındı.
+ *       500:
+ *         description: Sunucu hatası
+ */
+router.get("/api/v1/users/:userId",isAuth,isRole("Admin"),adminController.get_users_details);
 
 /**
  * @swagger
@@ -126,7 +140,6 @@ router.post("/api/v1/users",
         body("name").notEmpty().withMessage("Ad alanı boş bırakılamaz"),
         body("surname").notEmpty().withMessage("Soyad alanı boş bırakılamaz"),
         body("email").notEmpty().withMessage("E-posta alanı boş bırakılamaz"),
-        body("password").notEmpty().withMessage("Şifre alanı boş bırakılamaz"),
     ],
 isAuth,isRole("Admin"),adminController.post_users);
 
