@@ -129,6 +129,8 @@ router.post("/api/v1/documents", isAuth, isRole(["3. Parti Firma Kullanıcısı"
  *     responses:
  *       200:
  *         description: Belgeler başarıyla alındı.
+ *       403:
+ *         description: Bu işçi belgelerine erişme yetkiniz yok!
  *       404:
  *         description: Belirtilen işçi bulunamadı.
  *       500:

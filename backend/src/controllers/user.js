@@ -95,10 +95,14 @@ exports.post_documents = async (req,res) => {
 }
 
 exports.get_documents = async (req, res) => {
+    const userId = req.user.id;
     const {workerId} = req.params;
     try {
         const worker = await Workers.findByPk(workerId);
 
+        if(userId != worker.addedById){
+            return res.status(403).json({success:false,message:"Bu işçi belgelerine erişme yetkiniz yok!"});
+        }
         if(!worker){
             return res.status(404).json({success:false, message:"Belirtilen işçi bulunamadı."})
         }
