@@ -39,6 +39,9 @@ data() {
                     }
                 });
                
+                if(response.status === 200){
+                    alert(response.data.message)
+                }
                 await this.$axios.get("/api/v1/logout");
                 this.$store.commit('clearUser'); 
                 this.$store.commit('clearToken'); 
