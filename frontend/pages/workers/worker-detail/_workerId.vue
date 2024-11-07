@@ -18,6 +18,7 @@
               <th>Durum</th>
               <th>Durum Açıklaması</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -26,13 +27,21 @@
               <td>{{ document.UploadedBy.name }}</td>
               <td>{{ document.ApprovedBy ? document.ApprovedBy.name : "-" }}</td>
               <td>{{ document.status == "approved" ? "Onaylandı" : document.status == "pending" ? "Bekliyor" : document.status == "rejected" ? "Reddedildi" : ""  }}</td>
-              <td>{{ document.rejection_reason ?  document.rejection_reason : "" }}</td>
+              <td>{{ document.rejection_reason}}</td>
+              <td v-if="(role === 'Admin' || role === 'İnsan Kaynakları')">
+                <select name="status" id="status" class="form-select" @change="updateStatus(document.id, $event.target.value)">
+                  <option v-for="status in statusOptions" :value="status" :selected="status === document.status">
+                    {{ status === "approved" ? "Onaylandı" : status === "rejected" ? "Reddedildi" : "Bekliyor" }}
+                  </option>
+                </select>
+              </td>
               <td><button @click="confirmDelete(document.id)" class="btn btn-danger">Sil</button></td>
             </tr>
           </tbody>
         </table>
       </div>
 
+      <!-- modal -->
       <div v-if="showModal" class="modal fade show" tabindex="-1" style="display: block;">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -61,7 +70,13 @@
         workerId : this.$route.params.workerId,
         showModal: false,
         userToDelete: null,
+        statusOptions: ["pending","approved","rejected"]
       };
+    },
+    computed: {
+      role() {
+        return this.$store.getters.getRole;
+      },
     },
     mounted() {
       this.fetchDocuments();
@@ -142,6 +157,44 @@
           }
           console.error('Dosya silinirken hata oluştu:', error);
           alert('Dosya silinirken bir hata oluştu.');
+        }
+      },
+
+      async updateStatus(documentId,newStatus){
+        try{
+          const token = localStorage.getItem("token");
+          const response = await this.$axios.patch(`/api/v1/documents`,{
+            documentId,
+            status: newStatus 
+          },{
+            headers:{
+              Authorization: `Bearer ${token}`
+            }
+          })
+          if(response.status === 200){
+            const updatedDocument = this.documents.find(doc => doc.id === documentId);
+            if(updatedDocument){
+              updatedDocument.status = newStatus
+              updatedDocument.rejection_reason = response.data.document.rejection_reason
+            }      
+            alert(response.data.message)
+          }
+        }catch(err){
+          console.log("Döküman durumu güncellenirken hata oluştu!", err);
+          alert("Döküman durumu güncellenirken hata oluştu!")
+          if(err.response){
+            const status = err.response.status;
+            const data = err.response.data;
+            if(status === 403){
+              alert(data.message)
+            }else if(status === 404){
+              alert(data.message)
+            }else if(status === 500){
+              alert(data.message)
+            }else{
+              alert(data.message)
+            }
+          }
         }
       }
     }
