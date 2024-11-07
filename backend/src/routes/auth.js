@@ -115,7 +115,7 @@ authController.post_login);
  *          500:
  *              description: Sunucu Hatası.
  */
-router.post("/api/v1/forgot-password",[body("email").notEmpty().withMessage("E-posta alanı boş bırakılamaz"),],isAuth,authController.post_forgot_password);
+router.post("/api/v1/forgot-password",[body("email").notEmpty().withMessage("E-posta alanı boş bırakılamaz"),],authController.post_forgot_password);
 
 
 /**

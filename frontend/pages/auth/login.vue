@@ -12,7 +12,10 @@
           <label for="password" class="form-label">Şifre:</label>
           <input type="password" id="password" v-model="password" class="form-control" required placeholder="Şifrenizi girin"/>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+        <div class="d-flex align-items-center justify-content-between">
+          <button type="submit" class="btn btn-primary w-100 m-2">Giriş Yap</button>
+          <a class="btn btn-warning w-100 m-2" href="/auth/forgot-password">Şifremi unuttum</a>
+        </div>
       </form>
     </div>
   </div>
