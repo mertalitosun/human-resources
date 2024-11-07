@@ -118,10 +118,12 @@ exports.get_documents = async (req, res) => {
                 {
                     model: Users,
                     as: "UploadedBy",
+                    attributes: ['id', 'name'],
                 },
                 {
                     model: Users,
                     as: "ApprovedBy",
+                    attributes: ['id', 'name'],
                 }
             ]
         });
