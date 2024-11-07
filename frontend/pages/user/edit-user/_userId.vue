@@ -22,7 +22,9 @@
             </option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">Düzenle</button>
+        <div class="my-3">
+          <button type="submit" class="btn btn-primary">Düzenle</button>
+        </div>
       </form>
     </div>
   </template>
