@@ -227,7 +227,23 @@ exports.post_workers = async (req,res) => {
         res.status(500).json({ message: err.message });
     }
 }
+exports.get_workers_details = async (req,res) => {
+    const userId = req.user.id
+    const {workerId} = req.params;
+    try{
 
+        const worker = await Workers.findOne({where:{id:workerId},include:[{model:Documents},{model:Users, as:"AddedBy"}]});
+        if(userId !== worker.addedById){
+            return res.status(403).json({success:false,message:"Bu işlem için yetkili değilsiniz!"});
+        }
+
+        return res.status(200).json({success:true,workers,message:"İşçi getirildi."})
+       
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message})
+    }
+}
 exports.get_workers = async (req,res) => {
     const userId = req.user.id
     try{

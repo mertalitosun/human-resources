@@ -63,11 +63,21 @@ exports.put_users = async (req, res) => {
 }
 
 exports.get_users_details = async (req,res) => {
+    const authId = req.user.id;
     const {userId} = req.params;
     try{
-        const user = await Users.findOne({where:{id:userId},include:Roles});
 
-        return res.status(200).json({success:true,user,message:"Kullanıcı getirildi."})
+        const user = await Users.findOne({where:{id:userId},include:Roles});
+        if(req.user.role === "Admin"){
+            return res.status(200).json({success:true,user,message:"Kullanıcı getirildi."});
+        }else{
+            if(userId == authId ){
+                return res.status(200).json({success:true,user,message:"Kullanıcı getirildi."})
+            }else{
+                return res.status(403).json({success:false,message:"Bu işlem için yetkili değilsiniz!"})
+            }
+        }
+        
     }catch(err){
         console.log(err);
         return res.status(500).json({success:false,message:"Sunucu Hatası",serverMsg:err.message})

@@ -52,14 +52,21 @@ router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_users);
  *   get:
  *     tags:
  *          - Admin
- *     summary: Belirli kullanıcının bilgilerini getir
+ *     summary: Belirli kullanıcının bilgilerini getir.
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         description: Detay bilgisi almak istediğiniz kullanıcının ID'si.
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: Kullanıcı bilgileri başarıyla alındı.
  *       500:
  *         description: Sunucu hatası
  */
-router.get("/api/v1/users/:userId",isAuth,isRole("Admin"),adminController.get_users_details);
+router.get("/api/v1/users/:userId",isAuth,adminController.get_users_details);
 
 /**
  * @swagger

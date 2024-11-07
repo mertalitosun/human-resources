@@ -117,7 +117,7 @@ router.post("/api/v1/documents", isAuth, isRole(["3. Parti Firma Kullanıcısı"
  *   get:
  *     tags:
  *       - User
- *     summary: Belirli bir işçinin belgelerini al
+ *     summary: Belirli bir işçinin belgelerini getir
  *     description: Verilen işçi ID'sine göre belgeleri döndürür.
  *     parameters:
  *       - name: workerId
@@ -128,7 +128,7 @@ router.post("/api/v1/documents", isAuth, isRole(["3. Parti Firma Kullanıcısı"
  *           type: integer
  *     responses:
  *       200:
- *         description: Belgeler başarıyla alındı.
+ *         description: Belgeler başarıyla getirildi.
  *       403:
  *         description: Bu işçi belgelerine erişme yetkiniz yok!
  *       404:
@@ -247,17 +247,42 @@ router.post("/api/v1/workers",
 ]
 ,isAuth,isRole(["3. Parti Firma Kullanıcısı","Admin"]),userController.post_workers);
 
+
+/**
+ * @swagger
+ * /api/v1/workers/{workerId}:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: Belirli işçinin bilgilerni getir
+ *     description: Sistemdeki tüm işçilerin listesini döndürür.
+ *     parameters:
+ *       - name: workerId
+ *         in: path
+ *         required: true
+ *         description: Detay bilgisi almak istediğiniz işçinin ID'si.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: İşçiler başarıyla getirildi.
+ *       500:
+ *         description: Sunucu hatası.
+ */
+router.get("/api/v1/workers/:workerId",isAuth,isRole(["Admin","3. Parti Firma Kullanıcısı","İnsan Kaynakları"]),userController.get_workers_details);
+
+
 /**
  * @swagger
  * /api/v1/workers:
  *   get:
  *     tags:
  *       - User
- *     summary: Tüm işçilerin listesini al
+ *     summary: Tüm işçilerin listesini getir
  *     description: Sistemdeki tüm işçilerin listesini döndürür.
  *     responses:
  *       200:
- *         description: İşçiler başarıyla alındı.
+ *         description: İşçiler başarıyla getirildi.
  *       500:
  *         description: Sunucu hatası.
  */
