@@ -29,12 +29,13 @@
             </a>
             <ul class="dropdown-menu">
               <li v-if="isAuthenticated" class="nav-item">
+                <a class="nav-link" href="/auth/change-password">Şifremi Değiştir</a>
+              </li>
+              <li v-if="isAuthenticated" class="nav-item">
                 <a class="nav-link" href="#" @click="logout">Çıkış Yap</a>
               </li>
             </ul>
           </li>
-
-          
         </ul>
       </div>
     </div>
@@ -66,7 +67,7 @@ export default {
         console.log(err);
         alert("Çıkış işlemi yapılırken hata oluştu!"); 
       }
-    }
+    },
   },
   mounted() {
     this.$store.dispatch('loadUserFromStorage');
