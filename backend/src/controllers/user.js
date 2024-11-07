@@ -233,11 +233,15 @@ exports.get_workers_details = async (req,res) => {
     try{
 
         const worker = await Workers.findOne({where:{id:workerId},include:[{model:Documents},{model:Users, as:"AddedBy"}]});
-        if(userId !== worker.addedById){
+
+        if(!worker){
+            return res.status(404).json({success:false,message:"İşçi bulunamadı!"});
+        }
+        if(userId != worker.addedById){
             return res.status(403).json({success:false,message:"Bu işlem için yetkili değilsiniz!"});
         }
 
-        return res.status(200).json({success:true,workers,message:"İşçi getirildi."})
+        return res.status(200).json({success:true,worker,message:"İşçi getirildi."})
        
     }catch(err){
         console.log(err);

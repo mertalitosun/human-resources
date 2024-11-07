@@ -266,6 +266,10 @@ router.post("/api/v1/workers",
  *     responses:
  *       200:
  *         description: İşçiler başarıyla getirildi.
+ *       403:
+ *         description: Bu işlem için yetkili değilsiniz!
+ *       404:
+ *         description: İşçi bulunamdı!
  *       500:
  *         description: Sunucu hatası.
  */

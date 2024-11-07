@@ -68,6 +68,10 @@ exports.get_users_details = async (req,res) => {
     try{
 
         const user = await Users.findOne({where:{id:userId},include:Roles});
+
+        if(!user){
+            return res.status(404).json({success:true,user,message:"Kullanıcı Bulunamadı!"});
+        }
         if(req.user.role === "Admin"){
             return res.status(200).json({success:true,user,message:"Kullanıcı getirildi."});
         }else{

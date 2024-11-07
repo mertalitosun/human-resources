@@ -63,6 +63,10 @@ router.get("/api/v1/users",isAuth,isRole("Admin"),adminController.get_users);
  *     responses:
  *       200:
  *         description: Kullanıcı bilgileri başarıyla alındı.
+ *       403:
+ *         description: Bu işlem için yetkili değilsiniz!
+ *       404:
+ *         description: Kullanıcı bulunamadı!
  *       500:
  *         description: Sunucu hatası
  */
