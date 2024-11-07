@@ -242,7 +242,7 @@ exports.get_workers_details = async (req,res) => {
         if(!worker){
             return res.status(404).json({success:false,message:"İşçi bulunamadı!"});
         }
-        if(userId != worker.addedById){
+        if(req.user.role !== "İnsan Kaynakları" && userId != worker.addedById){
             return res.status(403).json({success:false,message:"Bu işlem için yetkili değilsiniz!"});
         }
 
