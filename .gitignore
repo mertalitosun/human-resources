@@ -1,4 +1,5 @@
 # Nuxt.js build files
+.nuxt/
 dist/
 
 # Dependency directories
