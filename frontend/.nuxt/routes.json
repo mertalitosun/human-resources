@@ -1,0 +1,79 @@
+[
+  {
+    "name": "auth-login",
+    "path": "/auth/login",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/auth/login.vue",
+    "chunkName": "pages/auth/login",
+    "_name": "_76002d57"
+  },
+  {
+    "name": "auth-register",
+    "path": "/auth/register",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/auth/register.vue",
+    "chunkName": "pages/auth/register",
+    "_name": "_c6254fb6"
+  },
+  {
+    "name": "user-user-create",
+    "path": "/user/user-create",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/user/user-create.vue",
+    "chunkName": "pages/user/user-create",
+    "_name": "_e3195f62"
+  },
+  {
+    "name": "user-users",
+    "path": "/user/users",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/user/users.vue",
+    "chunkName": "pages/user/users",
+    "_name": "_179662d9"
+  },
+  {
+    "name": "workers-worker-create",
+    "path": "/workers/worker-create",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/workers/worker-create.vue",
+    "chunkName": "pages/workers/worker-create",
+    "_name": "_60890e68"
+  },
+  {
+    "name": "workers-workers",
+    "path": "/workers/workers",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/workers/workers.vue",
+    "chunkName": "pages/workers/workers",
+    "_name": "_4b5c25d4"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_db9e1e66"
+  },
+  {
+    "name": "user-edit-user-userId",
+    "path": "/user/edit-user/:userId?",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/user/edit-user/_userId.vue",
+    "chunkName": "pages/user/edit-user/_userId",
+    "_name": "_ed1ccd56"
+  },
+  {
+    "name": "workers-document-create-workerId",
+    "path": "/workers/document-create/:workerId?",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/workers/document-create/_workerId.vue",
+    "chunkName": "pages/workers/document-create/_workerId",
+    "_name": "_45328ed8"
+  },
+  {
+    "name": "workers-edit-worker-workerId",
+    "path": "/workers/edit-worker/:workerId?",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/workers/edit-worker/_workerId.vue",
+    "chunkName": "pages/workers/edit-worker/_workerId",
+    "_name": "_fc917e6a"
+  },
+  {
+    "name": "workers-worker-detail-workerId",
+    "path": "/workers/worker-detail/:workerId?",
+    "component": "/Users/mertalitosun/Desktop/linova-teknoloji/human-resources/frontend/pages/workers/worker-detail/_workerId.vue",
+    "chunkName": "pages/workers/worker-detail/_workerId",
+    "_name": "_5c86652a"
+  }
+]
