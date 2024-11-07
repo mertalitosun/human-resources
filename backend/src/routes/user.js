@@ -232,7 +232,7 @@ router.delete("/api/v1/workers/:workerId",isAuth,isRole(["3. Parti Firma Kullan�
  *                 type: string
  *     responses:
  *       201:
- *         description: İşçi başarıyla kaydedildi.
+ *         description: İşçi başarıyla kaydedildi.                        
  *       400:
  *         description: Bu işçi zaten kayıtlı.
  *       500:
