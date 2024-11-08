@@ -3,7 +3,7 @@
       <div class="container my-3">
         <h2>İşçiler</h2>
         <div class="d-flex align-items-center justify-content-end">
-          <nuxt-link to="/workers/worker-create">Yeni işçi Ekle</nuxt-link>
+          <nuxt-link to="/workers/worker-create" class="btn btn-outline-success">Yeni işçi Ekle</nuxt-link>
         </div>
         <table class="table">
           <thead>
@@ -26,10 +26,10 @@
               <td>{{ worker.email }}</td>
               <td>{{ worker.AddedBy.name }}</td>
               <td>
-                <nuxt-link :to="`/workers/worker-detail/${worker.id}`">Evraklar</nuxt-link>
+                <nuxt-link :to="`/workers/worker-detail/${worker.id}`" class="btn btn-secondary">Evraklar</nuxt-link>
               </td>
               <td>
-                <nuxt-link :to="`/workers/edit-worker/${worker.id}`">Düzenle</nuxt-link>
+                <nuxt-link :to="`/workers/edit-worker/${worker.id}`" class="btn btn-info">Düzenle</nuxt-link>
               </td>
               <td>
                <button @click="confirmDelete(worker.id)" class="btn btn-danger">Sil</button>

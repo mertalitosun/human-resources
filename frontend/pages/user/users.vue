@@ -3,7 +3,7 @@
       <div class="container my-3">
         <h2>Kullanıcılar</h2>
         <div class="d-flex align-items-center justify-content-end">
-          <nuxt-link to="/user/user-create">Yeni Kullanıcı Ekle</nuxt-link>
+          <nuxt-link to="/user/user-create" class="btn btn-outline-success">Yeni Kullanıcı Ekle</nuxt-link>
         </div>
         <table class="table">
           <thead>
@@ -23,7 +23,7 @@
               <td>{{ user.surname }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.role.name }}</td>
-              <td><nuxt-link :to="`/user/edit-user/${user.id}`">Düzenle</nuxt-link></td>
+              <td><nuxt-link :to="`/user/edit-user/${user.id}`" class="btn btn-info">Düzenle</nuxt-link></td>
               <td><button @click="confirmDelete(user.id)" class="btn btn-danger">Sil</button></td>
             </tr>
           </tbody>

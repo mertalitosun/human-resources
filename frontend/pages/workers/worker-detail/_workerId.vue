@@ -6,7 +6,7 @@
         Kullanıcıya ait evrak bulunamadı
       </div>
       <div class="d-flex align-items-center justify-content-end">
-        <nuxt-link :to="`/workers/document-create/${workerId}`">Evrak Ekle</nuxt-link>
+        <nuxt-link :to="`/workers/document-create/${workerId}`" class="btn btn-outline-success">Evrak Ekle</nuxt-link>
       </div>
       
       <table class="table" v-if="documents.length > 0">

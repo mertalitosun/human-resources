@@ -4,7 +4,7 @@
       <h1 class="title">
         Human Resources
       </h1>
-      <div class="d-flex align-items-center justify-content-between">
+      <div v-if="!isAuthenticated" class="d-flex align-items-center justify-content-between">
         <a class="btn btn-outline-success w-100 m-2" href="/auth/login">Giriş Yap</a>
         <a class="btn btn-outline-primary w-100 m-2" href="/auth/register">Kayıt Ol</a>
       </div>
@@ -18,6 +18,11 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated; 
+    },
   }
 }
 </script>
