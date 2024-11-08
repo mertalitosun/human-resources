@@ -1,28 +1,12 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
-        frontend
+        Human Resources
       </h1>
-      <h2 class="subtitle">
-        My awesome Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+      <div class="d-flex align-items-center justify-content-between">
+        <a class="btn btn-outline-success w-100 m-2" href="/auth/login">Giriş Yap</a>
+        <a class="btn btn-outline-primary w-100 m-2" href="/auth/register">Kayıt Ol</a>
       </div>
     </div>
   </div>
