@@ -23,7 +23,9 @@
         </thead>
         <tbody>
           <tr v-for="document in documents" :key="document.id">
-            <td>{{ document.name }}</td>
+            <td><a :href="document.path" download :title="'PDF indir: ' + document.name" class="btn btn-outline-info">
+                {{document.name}}
+              </a></td>
             <td>{{ document.UploadedBy.name }}</td>
             <td>{{ document.ApprovedBy ? document.ApprovedBy.name : "-" }}</td>
             <td>{{ document.status == "approved" ? "Onaylandı" : document.status == "pending" ? "Bekliyor" : document.status == "rejected" ? "Reddedildi" : ""  }}</td>
