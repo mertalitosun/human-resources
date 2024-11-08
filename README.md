@@ -74,6 +74,8 @@
 ## Kullanım
     1. Oluşturduğunuz ilk kayıt admin olarak olacaktır. Daha sonraki her bir kayıt 3. Parti Firma Kullanısı rolündedir.
     2. Admin yeni kullanıcı eklerken "Admin", "İnsan Kaynakları", "3. Parti Firma Kullanıcısı" rollerinden birini seçebilir.
+    3. 3.Parti Firma Kullanıcıları yeni bir işçi ekler ve ekledikleri işçilerin belgelerini ekler daha sonra bu belgeleri silebilir durumunu takip edebilir.
+    4. İnsan Kaynakları eklenen belgeleri inceler, onaylar ve reddeder.
 
 ## Veritabanı Yapısı
 
