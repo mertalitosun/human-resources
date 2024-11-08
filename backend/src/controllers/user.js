@@ -4,6 +4,8 @@ const Workers = require("../models/workers");
 const Sequelize = require("sequelize")
 const validation = require("../middlewares/validation");
 
+const {sendNewMail} = require("../helpers/nodemailer");
+
 const {deleteFile} = require("../helpers/multer");
 
 exports.patch_document_status = async (req,res) => {
@@ -14,12 +16,13 @@ exports.patch_document_status = async (req,res) => {
             return res.status(403).json({success:false, message: "Bu İşlem İçin Yetkiniz Yok!"});
         }
 
-        const document = await Documents.findOne({where:{id:documentId}});
+        const document = await Documents.findOne({where:{id:documentId},include:{model:Users, as:"ApprovedBy"},include:{model:Users, as:"UploadedBy"}});
 
         if(!document){
             return res.status(404).json({success:false,message:"Dosya bulunamadı!"})
         }
 
+        const oldStatus = document.status;
         if(status == "rejected"){
             document.rejection_reason = rejection_reason || "Reddilme Nedeni Bildirilmedi";
             document.status = status;
@@ -29,7 +32,34 @@ exports.patch_document_status = async (req,res) => {
             document.rejection_reason = null;
             document.approvedById = req.user.id;
         }
-        
+
+            const subject = "Evrak Durumu Düncellendi";
+            const text = `
+            <div class="container">
+                    <div class="header">
+                        <h2>Durum Değişikliği Bildirimi</h2>
+                    </div>
+
+                    <div class="content">
+                        <p>Merhaba,</p>
+                        <p>Aşağıda belirtilen bilgiler doğrultusunda bir durum değişikliği gerçekleştirilmiştir:</p>
+
+                        <div class="status-info">
+                            <p><strong>Eski Durum:</strong> ${oldStatus == "approved" ? "Onaylandı" : oldStatus == "rejected" ? "Reddedildi" : "Bekliyor"}</p>
+                            <p><strong>Yeni Durum:</strong> ${status == "approved" ? "Onaylandı" : status == "rejected" ? "Reddedildi" : "Bekliyor"}</p>
+                            <p><strong>Reddilme Nedeni:</strong> ${document.rejection_reason ? document.rejection_reason : "-"}</p>
+                            <p><strong>Değiştiren Kişi:</strong> ${user.name}</p>
+                            <p><strong>Değiştirme Saati:</strong> ${document.updatedAt}</p>
+                        </div>
+
+                    </div>
+
+                    <div class="footer">
+                        <p>Bu e-posta sistem tarafından otomatik olarak gönderilmiştir. Lütfen yanıt vermeyiniz.</p>
+                    </div>
+                </div>
+            `;
+        await sendNewMail(document.UploadedBy.email, subject, text); 
         await document.save();
         return res.status(200).json({ success: true, message: "Evrak durumu başarıyla güncellendi", document });
     }catch(err){
