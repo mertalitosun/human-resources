@@ -87,7 +87,7 @@
 Proje, aşağıdaki temel veritabanı tablolarını kullanır:
 
 - **Users**: Kullanıcı bilgilerini içerir (id, ad, email, şifre, rol vb.).
-- **Roles**: Kullanıcı rollerinin tanımlarını içerir (Admin, İnsan Kaynakları, 3. Parti Firma Kullanıcısı vb. [name]).
+- **Roles**: Kullanıcı rollerinin tanımlarını içerir (Admin, İnsan Kaynakları, 3. Parti Firma Kullanıcısı vb.).
 - **Documents**: Kullanıcıların evraklarının bilgilerini içerir (evrak adı, durum, onaylanma tarihi vb.).
 - **Workers**: İşçilerin bilgilerini içerir (id, ad, email, tc).
 
