@@ -222,3 +222,30 @@ transporter.sendMail(mailOptions, (error, info) => {
 ```
 
 Bu yapıda değişiklikler yaptım kendi ihtiyaçlarıma göre fonksyion ekleyip dinamikleştirdim.
+
+7. Dockerfile örneği verir misin? 
+
+```bash
+# Node.js'in resmi Docker imajını kullan
+FROM node:14
+
+# Çalışma dizinini belirle (içerideki dosyaların kopyalanacağı yer)
+WORKDIR /usr/src/app
+
+# package.json ve package-lock.json dosyalarını çalışma dizinine kopyala
+COPY package*.json ./
+
+# Bağımlılıkları yükle
+RUN npm install
+
+# Kalan uygulama dosyalarını çalışma dizinine kopyala
+COPY . .
+
+# Uygulamanın çalışacağı portu belirt (örneğin 3000)
+EXPOSE 3000
+
+# Uygulamayı başlatmak için komut
+CMD ["node", "app.js"]
+```
+
+Bana verdiği dockerfile örneğini kullandım
