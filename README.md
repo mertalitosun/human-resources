@@ -66,7 +66,11 @@
 
     - ```bash
         npm run build
-        ``` 
+        ```
+      ardından
+    - ```bash
+         npm start
+      ```
 ## Kullanım
     1. Oluşturduğunuz ilk kayıt admin olarak olacaktır. Daha sonraki her bir kayıt 3. Parti Firma Kullanısı rolündedir.
     2. Admin yeni kullanıcı eklerken "Admin", "İnsan Kaynakları", "3. Parti Firma Kullanıcısı" rollerinden birini seçebilir.
