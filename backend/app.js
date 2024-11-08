@@ -30,10 +30,10 @@ app.use(swaggerRoutes);
 
 //Veritabanını modellere göre yeniler
 
-// (async () => {
-//   await sequelize.sync({ alter: true });
-//   await require("./src/data/dummyData")();
-// })();
+(async () => {
+  await sequelize.sync({ alter: true });
+  await require("./src/data/dummyData")();
+})();
 
 app.listen(process.env.PORT || 8000, () => {
     console.log(process.env.PORT  || 8000, "portuna bağlandı")

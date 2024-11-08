@@ -56,4 +56,8 @@ export default {
     extend (config, ctx) {
     }
   },
+  server: {
+    host: '0.0.0.0', // Docker için gerekli
+    port: 3000,       // Yönlendirilmiş port
+  },
 }

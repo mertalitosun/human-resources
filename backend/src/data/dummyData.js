@@ -2,7 +2,7 @@
 const Users = require("../models/users");
 const Roles = require("../models/roles");
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 
 const dummyData = async () => {

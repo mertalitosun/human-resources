@@ -15,7 +15,8 @@ const connection = async () =>{
         console.log(config.db.database, "veritabanına bağlandı.");
     } 
     catch (error) {
-        console.error('Veritabanı bağlantı hatası', error);
+        console.log(config.db.database,config.db.user,config.db.password,config.db.host)
+        console.error('Veritabanı bağlantı hatası', error.message);
     }
 }
   
